@@ -47,8 +47,17 @@ MuSIC is a deep learning toolkit for predicting RNA-binding protein (RBP) intera
     - GPU acceleration is recommended. Ensure CUDA 11.3 and compatible PyTorch are installed.
 
 ### 2. RNAfold Installation
-- ViennaRNA is included in the `ViennaRNA` folder.
+- ViennaRNA is included in the `ViennaRNA-2.7.0.tar.gz` file.
+    ```bash
+    tar -zxvf ViennaRNA-2.7.0.tar.gz
+    cd ViennaRNA-2.7.0
+    ./configure
+    make
+    sudo make install
+    ```
 - If issues occur, see [ViennaRNA installation guide](https://www.tbi.univie.ac.at/RNA/ViennaRNA/doc/html/install.html).
+
+
 
 ### 3. Requirements
 - Python 3.6.15
@@ -74,8 +83,11 @@ data/
 ```bash
 cd MuSIC/data
 # extract datasets (replace with actual URLs)
+wget xxxxx
 tar zxvf cross_species.tgz
+wget xxxxx
 tar zxvf within_species.tgz
+wget xxxxx
 tar zxvf 186rbp_dataset.tgz
 
 ### Data Format
