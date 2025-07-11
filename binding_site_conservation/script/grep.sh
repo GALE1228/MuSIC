@@ -1,0 +1,10 @@
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_ARATH.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_ARATH.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MOUSE.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MOUSE.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_RAT.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_RAT.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_XENLA.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_XENLA.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_PONAB.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_PONAB.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DANRE.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DANRE.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DROME.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DROME.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MACFA.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MACFA.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_YEAST.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_YEAST.core.tsv
+grep -f /home/bioinfo/02_project/05_RBP/05_homo/core.txt /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_CHICK.tsv | sort -k6 > /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_CHICK.core.tsv

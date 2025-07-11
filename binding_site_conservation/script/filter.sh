@@ -1,0 +1,10 @@
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_ARATH.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_ARATH.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MOUSE.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MOUSE.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_RAT.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_RAT.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_XENLA.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_XENLA.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_PONAB.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_PONAB.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DANRE.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DANRE.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DROME.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_DROME.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MACFA.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_MACFA.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_YEAST.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_YEAST.core.filted.tsv
+Rscript /home/bioinfo/02_project/05_RBP/05_homo/script/filter.R -w 0.9 -i /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_CHICK.core.tsv -o /home/bioinfo/02_project/05_RBP/05_homo/HUMAN_CHICK.core.filted.tsv
