@@ -77,13 +77,6 @@ data/
 ├── predict_data/             # Example FASTA files for prediction
 ├── 186rbp_dataset/           # Human data for training
 ```
-
-### All Datasets
-
-All datasets, including within-species, cross-species, and 186rbp_dataset, are available for download:
-
-- [Download all datasets](https://drive.google.com/your-dataset-link)
-
 ### Data Format
 
 - **FASTA**: Input RNA sequences
