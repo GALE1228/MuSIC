@@ -21,15 +21,15 @@ Jiale He*, Tong Zhou*, Lufeng Hu*, Yuhua Jiao, Junhao Wang, Shengwen Yan, Siyao 
 ### 🧩 MuSIC Framework
 ![MuSIC](fig/workflow_all.png)
 
-- [⚙️ Getting Started](#⚙️getting-started)
-- [📦 Datasets](#📦datasets)
-- [🚀 Usage](#🚀usage)
-- [📁 Output Directory Structure](#📁output-directory-structure)
-- [🧬 Binding Site Conservation](#🧬binding-site-conservation)
-- [🧬 SNV Impact Prediction](#🧬snv-impact-prediction)
-- [📖 Citation](#📖citation)
-- [📜 License](#📜license)
-- [📬 Contact](#📬contact)
+- [⚙️ Getting Started](#getting-started)
+- [📦 Datasets](#datasets)
+- [🚀 Usage](#usage)
+- [📁 Output Directory Structure](#output-directory-structure)
+- [🧬 Binding Site Conservation](#binding-site-conservation)
+- [🧬 SNV Impact Prediction](#snv-impact-prediction)
+- [📖 Citation](#citation)
+- [📜 License](#license)
+- [📬 Contact](#contact)
 ---
 
 ## ⚙️Getting Started
