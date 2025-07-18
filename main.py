@@ -47,10 +47,6 @@ def main(args):
 
     if args.train:
 
-        """
-        测试平滑label的训练代码
-
-        """
         train_loader , test_loader = train_dataset(file_path , rbp , batch_size ,smooth_rate)
 
         model = CNN().to(device)
@@ -78,7 +74,7 @@ def main(args):
             ]
         )
 
-        # 定义颜色的 ANSI 转义码
+        # Define ANSI escape codes for colors
         COLOR_GREEN = '\033[92m'
         COLOR_RED = '\033[91m'
         COLOR_RESET = '\033[0m'
@@ -89,23 +85,23 @@ def main(args):
             scheduler.step()
             lr = scheduler.get_lr()[0]
             
-            color_best = 'green'  # 默认颜色为绿色
+            color_best = 'green'  # Default color is green
             
-            # 如果当前的 AUC 比最好的 AUC 高，更新最佳模型
+            # If the current AUC is higher than the best AUC, update the best model
             if best_auc < v_met.auc:
                 best_auc = v_met.auc
                 best_acc = v_met.acc
                 best_epoch = epoch
-                color_best = 'red'  # 如果是最好的 AUC，使用红色
-                # 确保传递正确的文件路径
+                color_best = 'red'  # If it is the best AUC, use red
+                # Ensure the correct file path is passed
                 torch.save(model.state_dict(), best_model_path)
 
-            # 检查是否满足早停条件
+            # Check if early stopping condition is met
             if epoch - best_epoch > early_stopping:
                 print(f"Early stop at {epoch}, {exp_name}")
                 break
 
-            # 打印日志信息，并添加颜色
+            # Print log information and add color
             if color_best == 'red':
                 color = COLOR_RED
             else:
@@ -118,7 +114,7 @@ def main(args):
                         f'Acc: {v_met.acc:.2f}, AUC: {v_met.auc:.4f} '
                         f'({best_auc:.4f} best){COLOR_RESET}')
             
-        # 打印最终结果
+        # Print final result
         logging.info("%s auc: %.4f acc: %.4f", "TEST", best_auc, best_acc)
 
         filename = best_model_path.format("best")

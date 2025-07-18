@@ -26,8 +26,8 @@ def init_fasta_headers(fasta_path, replacement='|'):
 
 def load_h5_file(h5_file):
     with h5py.File(h5_file, "r") as h5f:
-        rna_names = h5f["rna_names"][:]  # 加载 RNA 名称
-        one_hot_matrices = h5f["one_hot_matrices"][:]  # 加载 One-hot 矩阵
+        rna_names = h5f["rna_names"][:]  # Load RNA names
+        one_hot_matrices = h5f["one_hot_matrices"][:]  # Load one-hot matrices
 
     return rna_names,one_hot_matrices
 
@@ -45,14 +45,14 @@ def create_dataloader(X, y, y_smooth, batch_size):
     return dataloader
 
 def create_infer_dataloader(X, y, rna_names, batch_size=32):
-    tensor_x = torch.Tensor(X)  # 转换为Tensor
-    tensor_y = torch.Tensor(y)  # 转换为Tensor
+    tensor_x = torch.Tensor(X)  # Convert to Tensor
+    tensor_y = torch.Tensor(y)  # Convert to Tensor
     dataset = TensorDataset(tensor_x, tensor_y)
     
-    # 创建数据加载器
+    # Create data loader
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
-    # 返回数据加载器和 rna_names
+    # Return data loader and rna_names
     return dataloader, rna_names
 
 def load_model(model, model_path, device):
@@ -90,30 +90,30 @@ def smooth_onehot_label(one_hot_label, smooth_rate):
     return smoothed_labels
 
 def train_dataset(file_path, rbp_name, batch_size, smooth_rate):
-    # H5 文件路径
+    # H5 file path
     train_positive_h5_file = f"{file_path}/{rbp_name}/positive_data/train.h5"
     train_negative_h5_file = f"{file_path}/{rbp_name}/negative_data/train.h5"
     
-    # 检查是否存在 H5 文件，如果不存在则调用 process_rnafold_data
+    # Check if H5 files exist, if not, call process_rnafold_data
     if not os.path.exists(train_positive_h5_file) or not os.path.exists(train_negative_h5_file):
         print(f"{train_positive_h5_file} or {train_negative_h5_file} not found, generating H5 files.")
         process_train_rnafold_data(file_path, rbp_name)
 
-    # 加载正负数据集
+    # Load positive and negative datasets
     train_positive_rna_names, train_positive_dataset = load_h5_file(train_positive_h5_file)
     train_negative_rna_names, train_negative_dataset = load_h5_file(train_negative_h5_file)
 
-    # 合并数据集
+    # Merge datasets
     train_data = np.concatenate((train_positive_dataset, train_negative_dataset), axis=0)
 
-    # 创建训练集和测试集的标签
+    # Create labels for training and testing sets
     train_labels = np.concatenate((np.ones(len(train_positive_dataset)), np.zeros(len(train_negative_dataset))), axis=0)
 
     print(train_labels.shape)
     smoothed_label = smooth_onehot_label(torch.tensor(train_labels) , smooth_rate)
     print("smoothed_label shape:", smoothed_label.shape)
 
-    # 划分训练集和测试集
+    # Split training and testing sets
     X_train, X_test, y_train, y_test, y_train_smooth, y_test_smooth = train_test_split(
     train_data, train_labels, smoothed_label, test_size=0.2, random_state=42
     )
@@ -162,7 +162,7 @@ def inference_dataset(fasta_path , batch_size):
     test_data = inference_dataset
     test_labels = np.ones(len(inference_dataset))
 
-    # 创建数据加载器
+    # Create data loader
     data_loader, rna_names_all = create_infer_dataloader(test_data, test_labels, inference_rna_names, batch_size)
 
     return data_loader, rna_names_all
@@ -189,16 +189,16 @@ def save_validations(out_dir, filename, dataname, predictions, label, met):
     print("Prediction file:", probs_path)
 
 def save_infers(out_dir, filename, rna_names_all, y_all, p_all):
-    # 创建目录
+    # Create directory
     evals_dir = make_directory(out_dir, "out/infer")
     probs_path = os.path.join(evals_dir, filename + '.inference')
     
-    # 打开文件进行写入
+    # Open file for writing
     with open(probs_path, "w") as f:
         for i in range(len(y_all)):
             rna_name = rna_names_all[i]
             
-            # 检查是否是字节串，如果是，则解码
+            # Check if it is a byte string, if so, decode
             if isinstance(rna_name, bytes):
                 rna_name = rna_name.decode('utf-8')
             
