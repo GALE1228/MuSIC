@@ -1,4 +1,4 @@
-# 🧬 MuSIC
+# MuSIC
 
 [![License: Non-Commercial](https://img.shields.io/badge/license-non--commercial-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://www.python.org/)
@@ -7,18 +7,17 @@ A **PyTorch-based deep learning framework**
 
 ---
 
-## 🧩 Project Overview
+## Project Overview
 
 MuSIC is a deep learning toolkit for predicting RNA-binding protein (RBP) interactions with RNA across multiple species, leveraging both sequence and secondary structure information, and evolutionary conservation. It supports within-species and cross-species prediction, high-attention region analysis, saliency visualization, analysis fo binding Site conservation and SNV impact assessment.
 
 **Authors:**  
 Jiale He*, Tong Zhou*, Lufeng Hu*, Yuhua Jiao, Junhao Wang, Shengwen Yan, Siyao Jia, Qiuzhen Chen, Yangming Wang, Yucheng T. Yang, Lei Sun  
-
 *Equal contribution
 
 ---
 
-### 🧩 MuSIC Framework
+### MuSIC Framework
 ![MuSIC](fig/workflow_all.png)
 
 1. [Getting Started](#getting-started)
@@ -33,7 +32,7 @@ Jiale He*, Tong Zhou*, Lufeng Hu*, Yuhua Jiao, Junhao Wang, Shengwen Yan, Siyao 
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### 1. Environment Setup
 
@@ -43,7 +42,7 @@ conda activate MuSIC
 pip install -r requirements.txt
 pip install -e .
 ```
-- **CUDA:**  
+- CUDA:  
   GPU acceleration is recommended. Ensure CUDA 11.3 and compatible PyTorch are installed.
 
 ### 2. RNAfold Installation
@@ -67,7 +66,7 @@ If issues occur, see the [ViennaRNA installation guide](https://www.tbi.univie.a
 
 ---
 
-## 📦 Datasets
+## Datasets
 
 ### Directory Structure
 
@@ -105,9 +104,9 @@ python main.py \
 
 ---
 
-## 🚀 Usage
+## Usage
 
-### 🧬 Within-Species Training & Validation
+### Within-Species Training & Validation
 
 ```bash
 python main.py \
@@ -134,7 +133,7 @@ python main.py \
 
 ---
 
-### 🧬 Cross-Species Training & Validation
+### Cross-Species Training & Validation
 
 ```bash
 python main.py \
@@ -165,7 +164,7 @@ python main.py \
 
 ---
 
-### 🔎 Inference (Prediction)
+### Inference (Prediction)
 
 ```bash
 python main.py \
@@ -191,7 +190,7 @@ Inference results are saved as `.inference` files in `music/out/infer/`.
 
 ---
 
-### 🔥 High Attention Region (HAR) Computation
+### High Attention Region (HAR) Computation
 
 ```bash
 python main.py \
@@ -217,7 +216,7 @@ HAR results are stored in `music/out/har/`.
 
 ---
 
-### 🖼️ Saliency Map Visualization
+### Saliency Map Visualization
 
 ```bash
 python main.py \
@@ -243,7 +242,7 @@ Saliency map images are generated in `music/out/saliency_imgs/`.
 
 ---
 
-### 🧬 Motif Resource
+### Motif Resource
 
 Predicted RNA binding motifs for 186 RBPs across 11 species are available for download:
 
@@ -252,7 +251,7 @@ Predicted RNA binding motifs for 186 RBPs across 11 species are available for do
 
 ---
 
-## 📁 Output Directory Structure
+## Output Directory Structure
 
 - `music/out/model/`: Trained model weights (`.pth`)
 - `music/out/logs/`: Training and validation logs (`.txt`)
@@ -263,7 +262,7 @@ Predicted RNA binding motifs for 186 RBPs across 11 species are available for do
 
 ---
 
-## 🧬 Binding Site Conservation
+## Binding Site Conservation
 
 The workflow for analyzing cross-species RBP binding site conservation is summarized as follows:
 
@@ -296,11 +295,11 @@ bash script/count.sh
 Rscript script/plot_side.R -H count/count_heatmap.txt -B count/count_box.txt -c 2 -o figs/count_side_v2.pdf
 ```
 
-For a detailed workflow and advanced options, please refer to [binding_site_conservation/Fig5_workflow.md](binding_site_conservation/Fig5_workflow.md).
+For a detailed workflow and advanced options, please refer to [binding_site_conservation/Fig5_workflow.md](#binding_site_conservationfig5_workflowmd).
 
 ---
 
-## 🧬 SNV Impact Prediction
+## SNV Impact Prediction
 
 MuSIC is capable of predicting the effects of single nucleotide variants (SNVs) on RBP binding sites.
 
@@ -354,7 +353,7 @@ SNV Effect for RBP-RNA interaction
 
 ---
 
-## 📖 Citation
+## Citation
 
 If you use MuSIC in your research, please cite:
 
@@ -370,14 +369,13 @@ If you use MuSIC in your research, please cite:
 
 ---
 
-## 📜 License
+## License
 
 This project is covered under the MIT License.
 
-
 ---
 
-## 📬 Contact
+## Contact
 
 Thank you for using MuSIC! For questions, bug reports, or contributions, please contact the authors or open an issue on GitHub.
 
