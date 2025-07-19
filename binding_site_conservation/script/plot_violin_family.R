@@ -7,55 +7,55 @@ suppressMessages({
   library(tidyverse)    # for file handling (grep, list.files)
 })
 
-# 解析参数
+# Parse parameters
 option_list <- list(
-  make_option(c("-i", "--input"),   type="character", help="输入多个物种文件，格式：<path>/species_1.txt,<path>/species_2.txt，支持正则表达式", metavar="file"),
-  make_option(c("-c", "--col"),     type="integer",   default=1, help="选择列 (1-3) [default %default]", metavar="int"),
-  make_option(c("-p", "--pattern"), type="character", default=".*", help="RBP 名正则，只画匹配的 [default all]", metavar="regex"),
-  make_option(c("-o", "--output"),  type="character", default="violin_plot.pdf", help="输出 PDF 路径", metavar="file")
+  make_option(c("-i", "--input"),   type="character", help="Input multiple species files, format: <path>/species_1.txt,<path>/species_2.txt, supports regular expressions", metavar="file"),
+  make_option(c("-c", "--col"),     type="integer",   default=1, help="Select column (1-3) [default %default]", metavar="int"),
+  make_option(c("-p", "--pattern"), type="character", default=".*", help="RBP name regex, only plot matching ones [default all]", metavar="regex"),
+  make_option(c("-o", "--output"),  type="character", default="violin_plot.pdf", help="Output PDF path", metavar="file")
 )
 opt <- parse_args(OptionParser(option_list=option_list))
 
-if (is.null(opt$input)) stop("必须指定 -i")
-if (!(opt$col %in% 1:3)) stop("参数 -c 必须是 1、2 或 3")
+if (is.null(opt$input)) stop("Must specify -i")
+if (!(opt$col %in% 1:3)) stop("Parameter -c must be 1, 2, or 3")
 
-# 1. 使用正则表达式读取多个文件
+# 1. Use regular expressions to read multiple files
 input_files <- list.files(path = dirname(opt$input), pattern = basename(opt$input), full.names = TRUE)
 if (length(input_files) == 0) {
-  stop("没有符合正则表达式的文件")
+  stop("No files match the regular expression")
 }
 
-# 2. 读取每个文件并合并
+# 2. Read each file and merge
 species_list <- lapply(input_files, fread, header=FALSE, sep="\t", data.table=FALSE)
 
-# 3. 设置列名
+# 3. Set column names
 col_names <- c("bed", "col1", "col2", "col3")
 df_list <- lapply(species_list, function(file_data) {
   colnames(file_data) <- col_names
   return(file_data)
 })
 
-# 合并所有物种文件
+# Merge all species files
 df <- do.call(rbind, df_list)
 
-# 4. 归一化处理
+# 4. Normalize processing
 normalize_col <- function(df, col_index, num_species) {
   return(df[[paste0("col", col_index)]] / num_species * 100)
 }
 
 df$value <- normalize_col(df, opt$col, length(input_files))
 
-# 5. 正则过滤
+# 5. Regex filtering
 plot_df <- df[grepl(opt$pattern, df$bed), ]
-if (nrow(plot_df) == 0) stop("没有 RBP 符合正则")
+if (nrow(plot_df) == 0) stop("No RBP matches regex")
 
-# 6. 按照RBP分类并绘制每个RBP的每个文件的violin图
-# 通过列出每个文件和RBP的所有值，来构建数据
+# 6. Classify by RBP and draw violin plot for each RBP's each file
+# Build data by listing all values for each file and RBP
 plot_df$RBP <- factor(plot_df$bed)
 
-# 7. 绘制小提琴图
+# 7. Draw violin plot
 p <- ggplot(plot_df, aes(x = RBP, y = value, fill = RBP)) +
-  geom_violin(trim = TRUE, show.legend = FALSE) +  # 去除图例
+  geom_violin(trim = TRUE, show.legend = FALSE) +  # Remove legend
   stat_summary(fun = mean, geom = "crossbar", width = 0.5, color = "darkred") +
   theme_bw() +
   xlab(sprintf("Percent (method %d)", opt$col)) +
@@ -64,16 +64,16 @@ p <- ggplot(plot_df, aes(x = RBP, y = value, fill = RBP)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.border = element_blank(),
-        legend.position = "none") +  # 隐藏图例
-  facet_wrap(~bed, scales = "free_y")  # 每个RBP一行，每行显示多个文件的小提琴图
+        legend.position = "none") +  # Hide legend
+  facet_wrap(~bed, scales = "free_y")  # Each RBP one row, each row shows violin plots for multiple files
 
-# 输出设置
+# Output settings
 n_rbp <- length(unique(plot_df$RBP))
 height <- min(max(4, n_rbp * 0.3), 50)
 
-# 保存结果
+# Save results
 pdf(opt$output, width = 10, height = height)
 print(p)
 dev.off()
 
-cat(sprintf("已保存小提琴图至 %s (宽度=10\", 高度=%.1f\")\n", opt$output, height))
+cat(sprintf("Violin plot saved to %s (width=10\", height=%.1f\")\n", opt$output, height))

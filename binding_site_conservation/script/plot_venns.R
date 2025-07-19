@@ -1,4 +1,4 @@
-# 加载必要的包
+# Load required packages
 if (!requireNamespace("jsonlite", quietly = TRUE)) {
   install.packages("jsonlite")
 }
@@ -21,37 +21,37 @@ library(patchwork)
 library(ggplot2)
 library(grid)
 
-# 定义命令行参数
+# Define command line arguments
 option_list <- list(
   make_option(c("-j", "--json_file"), type = "character", default = "/data1/RiboGen/data/filter_specie_rbp.json",
-              help = "JSON 文件路径，默认为 %default"),
+              help = "JSON file path, default is %default"),
   make_option(c("-o", "--output_file"), type = "character", default = "species_vs_human_venn.pdf",
-              help = "Venn 图输出文件路径，默认为 %default")
+              help = "Venn diagram output file path, default is %default")
 )
 
 opt <- parse_args(OptionParser(option_list = option_list))
 
-# 检查 JSON 文件是否存在
+# Check if JSON file exists
 if (file.exists(opt$json_file)) {
-  # 读取 JSON 文件
+  # Read JSON file
   json_data <- read_json(opt$json_file)
-  message("成功读取 JSON 文件")
+  message("Successfully read JSON file")
   
-  # 获取人类的 RBP 数据
+  # Get human RBP data
   human_rbps <- json_data$human
   
-  # 获取除人类外的其他物种名称
+  # Get other species names except human
   other_species <- names(json_data)[names(json_data) != "human"]
   
-  # 初始化存储 Venn 图的列表
+  # Initialize list to store Venn diagrams
   venn_plots <- list()
   
-  # 遍历除人类外的每个物种
+  # Iterate through each species except human
   for (i in seq_along(other_species)) {
     species <- other_species[i]
     species_rbps <- json_data[[species]]
     
-    # 绘制 Venn 图
+    # Draw Venn diagram
     venn_grob <- draw.pairwise.venn(
       area1 = length(human_rbps),
       area2 = length(species_rbps),
@@ -70,46 +70,46 @@ if (file.exists(opt$json_file)) {
       cex = 1.5
     )
     
-    # 将 gList 转换为单个 grob 对象
+    # Convert gList to single grob object
     single_venn_grob <- grid::gTree(children = venn_grob)
     
-    # 将 Venn 图转换为 ggplot 对象
+    # Convert Venn diagram to ggplot object
     venn_ggplot <- ggplot() + 
       annotation_custom(grob = single_venn_grob) +
       theme_void() +
       theme(
         plot.margin = margin(10, 10, 10, 10),
-        panel.spacing = unit(2, "cm")  # 增加子图之间的间距
+        panel.spacing = unit(2, "cm")  # Increase spacing between subplots
       )
     
     venn_plots[[i]] <- venn_ggplot
   }
   
-  # 动态计算列数，可根据实际情况调整
+  # Dynamically calculate number of columns, can be adjusted as needed
   ncol_value <- 2
-  # 计算行数
+  # Calculate number of rows
   nrow_value <- ceiling(length(venn_plots) / ncol_value)
   
-  # 使用 patchwork 拼图
+  # Use patchwork to combine plots
   combined_plot <- wrap_plots(venn_plots, ncol = ncol_value, nrow = nrow_value) + 
     plot_layout(
       guides = "collect",
-      widths = rep(1, ncol_value)  # 调整列宽
+      widths = rep(1, ncol_value)  # Adjust column widths
     ) +
     theme(
-      panel.spacing.x = unit(3, "cm"),  # 增加列之间的间距
-      panel.spacing.y = unit(1, "cm")   # 增加行之间的间距
+      panel.spacing.x = unit(3, "cm"),  # Increase spacing between columns
+      panel.spacing.y = unit(1, "cm")   # Increase spacing between rows
     )
   
-  # 设置 PDF 输出文件
+  # Set PDF output file
   pdf(opt$output_file)
   
-  # 输出拼图
+  # Output combined plot
   print(combined_plot)
   
-  # 关闭 PDF 设备
+  # Close PDF device
   dev.off()
-  message(sprintf("Venn 图已保存为 %s", opt$output_file))
+  message(sprintf("Venn diagram saved as %s", opt$output_file))
 } else {
-  stop(sprintf("JSON 文件 %s 不存在", opt$json_file), call. = FALSE)
+  stop(sprintf("JSON file %s does not exist", opt$json_file), call. = FALSE)
 }

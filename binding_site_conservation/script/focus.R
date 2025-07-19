@@ -2,43 +2,43 @@
 
 suppressMessages(library(optparse))
 
-# 定义可接受的命令行选项：短参数和长参数
+# Define acceptable command line options: short and long parameters
 option_list <- list(
-  make_option(c("-a", "--file1"), type = "character", help = "file1 路径（格式同示例）", metavar = "FILE1"),
-  make_option(c("-b", "--file2"), type = "character", help = "file2 路径（格式同示例）", metavar = "FILE2"),
-  make_option(c("-o", "--output"), type = "character", help = "输出文件路径", metavar = "OUTPUT")
+  make_option(c("-a", "--file1"), type = "character", help = "file1 path (format same as example)", metavar = "FILE1"),
+  make_option(c("-b", "--file2"), type = "character", help = "file2 path (format same as example)", metavar = "FILE2"),
+  make_option(c("-o", "--output"), type = "character", help = "Output file path", metavar = "OUTPUT")
 )
 
 opt_parser <- OptionParser(option_list = option_list, 
-                           description = "用法示例：Rscript update_coordinates.R -a file1.txt -b file2.txt -o output.txt")
+                           description = "Usage example: Rscript update_coordinates.R -a file1.txt -b file2.txt -o output.txt")
 opt <- parse_args(opt_parser)
 
-# 如果任意一个必需参数缺失，则打印帮助并退出
+# If any required parameter is missing, print help and exit
 if (is.null(opt$file1) || is.null(opt$file2) || is.null(opt$output)) {
   print_help(opt_parser)
-  stop("请使用 --file1/-a、--file2/-b、--output/-o 参数。")
+  stop("Please use --file1/-a, --file2/-b, --output/-o parameters.")
 }
 
 file1_path  <- opt$file1
 file2_path  <- opt$file2
 output_path <- opt$output
 
-# 读入 file1：四列，第一列 idx，第三列 rel_start，第四列 rel_end
+# Read file1: four columns, first column idx, third column rel_start, fourth column rel_end
 file1 <- read.table(file1_path, header = FALSE, stringsAsFactors = FALSE)
 
-# 读入 file2：五列，用 '|' 分隔
+# Read file2: five columns, separated by '|'
 file2 <- read.table(file2_path,
                     sep = "|",
                     header = FALSE,
                     stringsAsFactors = FALSE,
                     col.names = c("ID", "region_start", "region_end", "boundary_end", "score"))
 
-# 检查行数是否一致
+# Check if row counts match
 if (nrow(file1) != nrow(file2)) {
-  stop("file1 和 file2 行数不一致，无法逐行对应。")
+  stop("file1 and file2 have different row counts, cannot correspond line by line.")
 }
 
-# 复制一份作为输出
+# Copy as output
 output <- file2
 
 for (i in seq_len(nrow(file1))) {
@@ -49,14 +49,14 @@ for (i in seq_len(nrow(file1))) {
   region_start <- as.numeric(file2[row_idx, "region_start"])
   boundary_end <- as.numeric(file2[row_idx, "boundary_end"])
 
-  # 计算新的全局坐标
+  # Calculate new global coordinates
   new_start <- region_start + rel_start - 1
   new_end   <- region_start + rel_end   - 1
   if (new_end > boundary_end) {
     new_end <- boundary_end
   }
 
-  # 更新输出表的 region_start 和 region_end
+  # Update region_start and region_end in output table
   output[row_idx, "region_start"] <- new_start
   output[row_idx, "region_end"]   <- new_end
 }

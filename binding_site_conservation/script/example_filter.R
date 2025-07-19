@@ -8,42 +8,42 @@ suppressMessages({
 
 option_list <- list(
   make_option(c("-u", "--updated"), type="character", default=NULL,
-              help="更新后（基于多序列比对坐标）的BED/TSV文件，至少5列：ID, start_upd, end_upd, extra1, extra2", metavar="file"),
+              help="Updated BED/TSV file (based on multi-sequence alignment coordinates), at least 5 columns: ID, start_upd, end_upd, extra1, extra2", metavar="file"),
   make_option(c("-r", "--raw"), type="character", default=NULL,
-              help="原始BED文件（convert.R运行前），格式“ID|start_raw|end_raw|extra1|extra2”，无表头", metavar="file"),
+              help="Original BED file (before convert.R), format 'ID|start_raw|end_raw|extra1|extra2', no header", metavar="file"),
   make_option(c("-f", "--fasta"), type="character", default=NULL,
-              help="多序列比对FASTA文件路径，用于坐标还原", metavar="file"),
+              help="Multi-sequence alignment FASTA file path for coordinate restoration", metavar="file"),
   make_option(c("-o", "--output"), type="character", default=NULL,
-              help="输出文件路径，仅包含与最佳ENST条目重叠的原始BED条目（按ID、坐标排序）", metavar="file")
+              help="Output file path, only includes original BED entries overlapping with best ENST entries (sorted by ID and coordinates)", metavar="file")
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))
 if (is.null(opt$updated) || is.null(opt$raw) || is.null(opt$fasta)) {
-  stop("必须同时指定 -u 更新后文件, -r 原始BED文件, -f FASTA")
+  stop("Must specify -u updated file, -r original BED file, -f FASTA")
 }
 
-# 1. 读取更新后BED/TSV，假定无表头，\t分隔
+# 1. Read updated BED/TSV, assume no header, tab separated
 df_upd <- fread(opt$updated, header=FALSE, sep="\t", data.table=FALSE,
                 col.names = c("ID", "start_upd", "end_upd", "extra1", "extra2"))
 if (!all(c("ID","start_upd","end_upd") %in% colnames(df_upd))) {
-  stop("更新后文件需包含至少三列：ID, start_upd, end_upd")
+  stop("Updated file must contain at least three columns: ID, start_upd, end_upd")
 }
 
-# 2. 读取原始BED，假定“|”分隔，无表头
+# 2. Read original BED, assume "|" separated, no header
 raw_df <- fread(opt$raw, header=FALSE, sep="|", data.table=FALSE,
                 col.names = c("ID", "start_raw", "end_raw", "extra1", "extra2"))
 if (nrow(df_upd) != nrow(raw_df)) {
-  stop("更新后文件与原始BED行数需一致，确保行一一对应")
+  stop("Updated file and original BED must have same number of rows, ensure one-to-one correspondence")
 }
 
-# 3. 载入MSA，用于坐标还原
+# 3. Load MSA for coordinate restoration
 msa <- readDNAMultipleAlignment(opt$fasta, format="fasta")
 seq_names <- rownames(msa)
 if (length(seq_names) == 0) {
-  stop("无法从FASTA中读取任何序列")
+  stop("Cannot read any sequences from FASTA")
 }
 
-# 辅助：MSA反向映射到原始坐标
+# Helper: MSA reverse mapping to original coordinates
 get_orig_pos <- function(msa_seq, msa_pos) {
   chars <- as.character(msa_seq)
   sub   <- substring(chars, 1, msa_pos)
@@ -55,15 +55,15 @@ find_msa_id <- function(id) {
   return(seq_names[idx[1]])
 }
 
-# 4. 分离ENST与非ENST
+# 4. Separate ENST and non-ENST
 is_enst <- grepl("^ENST", df_upd$ID)
 df_enst <- df_upd[is_enst, , drop=FALSE]
 df_non  <- df_upd[!is_enst, , drop=FALSE]
 
-# 5. 区间重叠判断
+# 5. Interval overlap check
 is_overlap <- function(s1,e1,s2,e2) !(e1 < s2 || e2 < s1)
 
-# 6. 计算每个ENST与不同非ENST的重叠数
+# 6. Calculate overlap count for each ENST with different non-ENST
 enst_indices  <- which(is_enst)
 n_enst        <- length(enst_indices)
 overlap_count <- integer(n_enst)
@@ -78,14 +78,14 @@ for (i in seq_len(n_enst)) {
   overlap_count[i] <- length(overlap_ids)
 }
 
-# 7. 找到最大重叠数，选取所有达到该值的ENST行
+# 7. Find maximum overlap count, select all ENST rows reaching that value
 max_overlap <- if (n_enst > 0) max(overlap_count) else 0
 if (max_overlap == 0) {
-  stop("没有ENST行与任何非ENST行重叠")
+  stop("No ENST rows overlap with any non-ENST rows")
 }
 best_enst_rows <- enst_indices[overlap_count == max_overlap]
 
-# 8. 对每个最佳ENST行，收集该行及其所有重叠的非ENST行
+# 8. For each best ENST row, collect that row and all overlapping non-ENST rows
 all_indices <- integer(0)
 for (idx_i in best_enst_rows) {
   st_i <- df_upd$start_upd[idx_i]
@@ -98,26 +98,26 @@ for (idx_i in best_enst_rows) {
 }
 all_indices <- unique(all_indices)
 
-# 9. 逐行还原原始坐标并收集输出
+# 9. Restore original coordinates line by line and collect output
 out_list <- list()
 for (idx in all_indices) {
   row_upd <- df_upd[idx, ]
   id      <- row_upd$ID
   msa_id  <- find_msa_id(id)
   if (is.na(msa_id)) {
-    warning(sprintf("未找到MSA序列 %s，跳过", id))
+    warning(sprintf("MSA sequence %s not found, skipping", id))
     next
   }
   msa_idx <- which(seq_names == msa_id)
   if (length(msa_idx) == 0) {
-    warning(sprintf("MSA中未找到序列 %s，跳过", msa_id))
+    warning(sprintf("Sequence %s not found in MSA, skipping", msa_id))
     next
   }
   msa_seq <- msa@unmasked[msa_idx][[1]]
   orig_st <- get_orig_pos(msa_seq, row_upd$start_upd)
   orig_en <- get_orig_pos(msa_seq, row_upd$end_upd)
   if (is.na(orig_st) || is.na(orig_en)) {
-    warning(sprintf("ID %s 的坐标映射失败，跳过", id))
+    warning(sprintf("Coordinate mapping failed for ID %s, skipping", id))
     next
   }
   raw_row <- raw_df[idx, ]
@@ -132,17 +132,17 @@ for (idx in all_indices) {
 }
 
 if (length(out_list) == 0) {
-  stop("未生成任何输出条目")
+  stop("No output entries generated")
 }
 out_df <- rbindlist(out_list)
 
-# 10. 按ID字母和start升序排序
+# 10. Sort by ID alphabetically and start ascending
 out_df <- out_df[order(out_df$ID, out_df$start), ]
 
-# 11. 写出结果
+# 11. Write results
 if (!is.null(opt$output)) {
   fwrite(out_df, file = opt$output, sep="|", quote=FALSE, col.names=FALSE, row.names=FALSE)
-  cat(sprintf("已输出 %d 条排序后的原始BED条目到 %s\n", nrow(out_df), opt$output))
+  cat(sprintf("Output %d sorted original BED entries to %s\n", nrow(out_df), opt$output))
 } else {
   fwrite(out_df, file="", sep="|", quote=FALSE, col.names=FALSE, row.names=FALSE)
 }
