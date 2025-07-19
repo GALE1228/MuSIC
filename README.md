@@ -47,16 +47,7 @@ pip install -e .
 
 ### 2. RNAfold Installation
 
-ViennaRNA is included in the `ViennaRNA-2.7.0.tar.gz` file.
-
-```bash
-tar -zxvf ViennaRNA-2.7.0.tar.gz
-cd ViennaRNA-2.7.0
-./configure
-make
-sudo make install
-```
-If issues occur, see the [ViennaRNA installation guide](https://www.tbi.univie.ac.at/RNA/ViennaRNA/doc/html/install.html).
+See the [ViennaRNA installation guide](https://www.tbi.univie.ac.at/RNA/ViennaRNA/doc/html/install.html).
 
 ### 3. Requirements
 
@@ -351,8 +342,8 @@ SNV Effect for RBP-RNA interaction
 If you use MuSIC in your research, please cite:
 
 ```bibtex
-@article{He2025,
-  title={Augmented Prediction of Multi-Species RBP–RNA Interactions by Leveraging Evolutionary Conservation},
+@article{xxx,
+  title={xxx},
   author={xxx},
   year={xxx},
   doi={xxx},
