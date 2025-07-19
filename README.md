@@ -19,7 +19,7 @@ Jiale He*, Tong Zhou*, Lufeng Hu*, Yuhua Jiao, Junhao Wang, Shengwen Yan, Siyao 
 ---
 
 ### 🧩 MuSIC Framework
-![MuSIC](fig/workflow_all.png)
+![MuSIC](fig/workflow.png)
 
 - [⚙️ Getting Started](#getting-started)
 - [📦 Datasets](#datasets)
