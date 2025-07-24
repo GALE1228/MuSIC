@@ -7,7 +7,6 @@ biopython==1.79
 biothings-client==0.3.1
 bleach==4.1.0
 blessed==1.20.0
-bokeh==2.3.3
 brokenaxes==0.4.2
 cached-property==1.5.2
 cachetools==4.2.4
@@ -19,9 +18,7 @@ clize==3.0
 cloudpickle==2.2.1
 colorcet==3.0.1
 cycler==0.11.0
-dataclasses @ file:///home/conda/feedstock_root/build_artifacts/dataclasses_1628958435052/work
 debtcollector==0.10.0
-decorator @ file:///home/conda/feedstock_root/build_artifacts/decorator_1641555617451/work
 dna-features-viewer==3.1.3
 einops==0.4.1
 entrypoints==0.4
@@ -29,7 +26,6 @@ et-xmlfile==1.1.0
 flatbuffers==1.12
 funcsigs==0.4
 gast==0.4.0
-general==0.0.3.dev9
 google-auth==1.35.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
@@ -45,8 +41,6 @@ ipython==7.16.3
 ipython-genutils==0.2.0
 iso8601==0.1.11
 jedi==0.17.2
-Jinja2==3.0.3
-joblib==1.1.1
 jupyter-client==7.1.2
 jupyter-core==4.9.2
 keras==2.6.0
@@ -56,9 +50,6 @@ llvmlite==0.36.0
 Markdown==3.3.7
 MarkupSafe==2.0.1
 matplotlib==3.3.4
-mkl-fft==1.2.0
-mkl-random==1.2.0
-mkl-service==2.3.0
 monotonic==0.4
 msgpack-python==0.4.6
 mygene==3.2.2
@@ -70,7 +61,6 @@ numba==0.53.1
 numpy==1.19.5
 nvidia-ml-py==12.560.30
 oauthlib==3.2.2
-olefile @ file:///home/conda/feedstock_root/build_artifacts/olefile_1602866521163/work
 openpyxl==3.1.3
 opt-einsum==3.3.0
 oslo.config==2.6.0
@@ -98,10 +88,8 @@ pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pyct==0.4.8
 pyfaidx==0.7.1
-Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1650904496387/work
 pyinotify==0.9.6
 pyparsing==3.0.9
-python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
 pytz==2024.1
 pyviz-comms==2.2.1
 PyYAML==3.11
@@ -131,15 +119,11 @@ tensorflow-estimator==2.6.0
 termcolor==1.1.0
 threadpoolctl==3.1.0
 torch==1.10.2
-torchaudio==0.10.2
-torchvision==0.11.3
-tornado @ file:///home/conda/feedstock_root/build_artifacts/tornado_1610094701020/work
 tqdm==4.64.1
 traitlets==4.3.3
 typing-extensions==3.7.4.3
 umap==0.1.1
 urllib3==1.26.18
-ViennaRNA==2.5.0a5
 wcwidth==0.2.6
 webencodings==0.5.1
 Werkzeug==2.0.3
